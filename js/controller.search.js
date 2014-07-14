@@ -50,12 +50,6 @@ searchPostByQuery.prototype.the_search_posts = function(){
 
 	if( this.options._debug == true ){ console.log("Searching: " + this.options.s_query );  }
 	
-	// // Hide wrapper
-	// $('#'+options.wrapper.id+' .item').animate({
-	// 	opacity: 0
-	// },300);
-
-
 	// if query was not empty		
 	this.__get_posts( this.options, function(options,data ){
 

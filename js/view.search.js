@@ -53,6 +53,8 @@ jQuery(document).ready(function(){
 
 		search.the_search_posts();
 
+		// from here onwards you're free to do whatever you want.
+
 	});
 
 });

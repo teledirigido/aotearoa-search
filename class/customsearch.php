@@ -36,6 +36,7 @@ if( class_exists('customSearch') ){
 
 		}
 
+
 		public function get_vars(){
 
 			$this->output = array(
@@ -51,6 +52,7 @@ if( class_exists('customSearch') ){
 
 		}
 
+
 		protected function __get_status(){
 
 			// if any either post or taxonomies where succefully retrieved
@@ -60,39 +62,6 @@ if( class_exists('customSearch') ){
 			} else {
 				$this->status = '404';
 			}
-
-		}
-
-
-		protected function __get_output(){
-
-			// preparing output
-			$this->output = array();
-			
-			// if id_list get posts
-			if( !empty($this->id_list['posts']) ){
-				$this->post_list = $this->__get_custom_posts( 
-					$this->id_list, 
-					$this->options
-				);
-
-			}
-
-			// if taxonomy has been defined to do a search query
-			if( !empty($this->id_list['terms']) && !empty($this->options['post_taxonomy']) ){
-				$this->taxonomy_list = $this->__get_custom_taxonomies( 
-					$this->id_list, 
-					$this->options['post_taxonomy'] 
-
-				);
-
-			}
-
-			$this->output['search'] = $this->options['s_query'];
-			$this->output['list'] = $this->post_list;
-			$this->output['taxonomy_list'] = $this->taxonomy_list;
-
-			return $this->output;
 
 		}
 
@@ -154,6 +123,25 @@ if( class_exists('customSearch') ){
 
 		}
 
+		private function __get_post_args(){
+			
+			$args = array(
+				'post__in' => $this->id_list['posts'],
+				'status' => 'published'
+			);
+
+			if( $this->options['post_type'] ){
+				$args_post_type = array( 'post_type' => $this->options['post_type'] );
+
+			} else {
+				$args_post_type = array( 'post_type' => 'any' );
+			}
+
+			$args = array_merge($args_post_type,$args);
+
+			return $args;
+
+		}
 
 		protected function __get_post_list(){
 
@@ -161,30 +149,34 @@ if( class_exists('customSearch') ){
 			if( empty($this->id_list['posts']) ){ return false; }
 
 			$this->post_list = array();
+			$args = $this->__get_post_args();
 
-			$args = array(
-				'post_type' => $this->options['post_type'],
-				'post__in' => $this->id_list['posts'],
-				'status' => 'published'
-			);
+			var_dump($args);
 
-			$posts = get_posts( $args );
+			$post_list_query = new WP_Query( $args );
 
-			foreach($posts as $post) {
+			if ( $post_list_query->have_posts() ) :
+				while ( $post_list_query->have_posts() ) : 
+					$post_list_query->the_post();
+
+					echo "string";
 				
-				setup_postdata($post);
+					global $post;
 
-				$post_data = new customPost($post, 
-					$this->options['date_format'], 
-					$this->options['post_taxonomy'],
-					$this->options['post_thumbnail_size']
-				);
+					$post_data = new customPost($post, 
+						$this->options['date_format'], 
+						$this->options['post_taxonomy'],
+						$this->options['post_thumbnail_size']
+					);
 
 
-				$post_data_vars = $post_data->get_vars();
+					$post_data_vars = $post_data->get_vars();
 
-				array_push($this->post_list, $post_data_vars );
-			}
+					array_push($this->post_list, $post_data_vars );
+
+				endwhile;
+			endif;
+			
 
 			wp_reset_postdata();
 

@@ -48,7 +48,10 @@ searchPostByQuery.prototype.__get_posts = function(options,callback){
 
 searchPostByQuery.prototype.the_search_posts = function(){
 
-	if( this.options._debug == true ){ console.log("Searching: " + this.options.s_query );  }
+	if( this.options._debug == true ){ 
+		console.log("Searching: " + this.options.s_query );  
+		console.log(this.options);
+	}
 	
 	// if query was not empty		
 	this.__get_posts( this.options, function(options,data ){
@@ -77,8 +80,6 @@ searchPostByQuery.prototype.the_search_posts = function(){
 
 
 	});
-
-	
 
 };
 

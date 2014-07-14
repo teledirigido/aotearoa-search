@@ -6,7 +6,7 @@ Nothing else, nothing less.
 
 This plugin it's under development. 
 
-I AM NOT RECOMENING TO ANYONE TO USE IT. 
+I AM NOT RECOMMENDING TO ANYONE TO USE IT. 
 
 You're  free to download it and have a look around.
 

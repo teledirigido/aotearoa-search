@@ -1,4 +1,4 @@
-aotearoa search
+aotearoa-search // wp_search_json
 ==============
 
 This is a plugin for wordpress that allows you to get a json object when you do search. 

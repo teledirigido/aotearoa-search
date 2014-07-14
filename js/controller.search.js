@@ -50,7 +50,6 @@ searchPostByQuery.prototype.the_search_posts = function(){
 
 	if( this.options._debug == true ){ 
 		console.log("Searching: " + this.options.s_query );  
-		console.log(this.options);
 	}
 	
 	// if query was not empty		

@@ -151,16 +151,12 @@ if( class_exists('customSearch') ){
 			$this->post_list = array();
 			$args = $this->__get_post_args();
 
-			var_dump($args);
-
 			$post_list_query = new WP_Query( $args );
 
 			if ( $post_list_query->have_posts() ) :
 				while ( $post_list_query->have_posts() ) : 
 					$post_list_query->the_post();
 
-					echo "string";
-				
 					global $post;
 
 					$post_data = new customPost($post, 
@@ -181,7 +177,6 @@ if( class_exists('customSearch') ){
 			wp_reset_postdata();
 
 		}
-
 
 		protected function __get_taxonomy_list(){
 

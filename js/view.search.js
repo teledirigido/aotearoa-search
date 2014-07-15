@@ -20,7 +20,7 @@
 
 /* 2) This is how your JS file should look
  *
- */
+ *
 
 jQuery(document).ready(function(){
 
@@ -57,14 +57,17 @@ jQuery(document).ready(function(){
 
 });
 
+ */
+
 
 /* 3) Use the following prototupe function to build your html
  *
  *
- */
  
 searchPostByQuery.prototype.build_html = function(data){
 
 	console.log(data);
 
 };
+
+ */

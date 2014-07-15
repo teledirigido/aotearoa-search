@@ -62,7 +62,7 @@ searchPostByQuery.prototype.the_search_posts = function(){
 				console.log(data);
 			}
 
-			_this.build_html();
+			_this.build_html(data);
 
 		});
 

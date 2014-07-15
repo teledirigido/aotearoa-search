@@ -9,9 +9,18 @@
     <input type="text" value="" id="search-form-text" data-post-type="[your-post-type]" />
 </form>
 
- * 2) This is how your JS file should look
+
+ * Because this is with git and still under development. 
+ * You can add your own no core functions and files on your theme
+ * Thanks :) 
+
+
+* * * * * * * * * * * * * * * * * * * * * * * * * */
+
+
+/* 2) This is how your JS file should look
  *
- *
+ */
 
 jQuery(document).ready(function(){
 
@@ -30,7 +39,7 @@ jQuery(document).ready(function(){
 			// true or false, simple as
 			json_format: false,
 			
-			// if you want to add a special format for your search
+			// if you want to add a special date format for your search
 			date_format: 'd.m',
 
 			// if you want to search by post_type
@@ -49,24 +58,13 @@ jQuery(document).ready(function(){
 });
 
 
- * 3) Use the following prototupe function to build your html
+/* 3) Use the following prototupe function to build your html
  *
  *
- *
+ */
  
 searchPostByQuery.prototype.build_html = function(data){
 
 	console.log(data);
 
 };
-
- * Because this is with git and still under development. 
- * Everything that it's not part of the core should have the 
- * following structure
- * extend.myfile.js
- * extend.myfile.php
- * 
- * and will be ignored
-
-
-* * * * * * * * * * * * * * * * * * * * * * * * * */

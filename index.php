@@ -17,21 +17,21 @@
  * JS FILES
  * --------
  * js/controller.search.js
- * js/view.search.js
+ * js/view.search.js (instructions about how to display the JSON file)
  *
  * The rest it's just additional stuff
  *
  */
 
 wp_enqueue_script( 'search-controller', 
-	plugin_dir_url( __FILE__ ) . '/js/controller.search.js', 
+	plugin_dir_url( __FILE__ ) . 'js/controller.search.js', 
 	array('jquery') , 
 	'1.0', 
 	true 
 );
 
 wp_enqueue_script( 'search-view', 
-	plugin_dir_url( __FILE__ ) . '/js/view.search.js', 
+	plugin_dir_url( __FILE__ ) . 'js/view.search.js', 
 	array('jquery') , 
 	'1.0', 
 	true 

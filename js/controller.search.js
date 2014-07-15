@@ -42,7 +42,7 @@ searchPostByQuery.prototype.__get_posts = function(options,callback){
 
 	 });
 
-	callback(options,data);
+	callback(options,data,this);
  
 }
 
@@ -53,7 +53,7 @@ searchPostByQuery.prototype.the_search_posts = function(){
 	}
 	
 	// if query was not empty		
-	this.__get_posts( this.options, function(options,data ){
+	this.__get_posts( this.options, function(options,data,_this){
 
 		data.done(function(data){
 
@@ -61,6 +61,8 @@ searchPostByQuery.prototype.the_search_posts = function(){
 				console.log('Data succefully retrieved');
 				console.log(data);
 			}
+
+			_this.build_html();
 
 		});
 

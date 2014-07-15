@@ -38,7 +38,5 @@ wp_enqueue_script( 'search-view',
 );
 
 require_once('class/customsearch.php');
-require_once('class/customsearch.event.php');
 require_once('class/custompost.php');
-require_once('class/custompost.event.php');
 require_once('search.php');

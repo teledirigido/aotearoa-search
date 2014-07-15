@@ -1,3 +1,5 @@
 # Don't add this files as i'm still testing them #
+.DS_Store
+extend.*
 custompost.event.php
 customsearch.event.php

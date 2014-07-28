@@ -8,6 +8,8 @@ if( class_exists('customSearch') ){
 
 		protected $id_list;
 		protected $post_list;
+		protected $max_num_pages;
+		protected $current_page;
 		protected $taxonomy_list;
 		protected $status;
 		protected $s_query;
@@ -18,7 +20,7 @@ if( class_exists('customSearch') ){
 			
 			// get options
 			$this->options = $options;
-			
+
 			// format the search query
 			$this->__format_search();
 
@@ -36,13 +38,16 @@ if( class_exists('customSearch') ){
 
 		}
 
-
 		public function get_vars(){
 
 			$this->output = array(
 				'post_list' => $this->post_list,
+				'query' => esc_html( $this->options['s_query'] ),
+				'post_type' => $this->__get_post_type(),
 				'taxonomy_list' => $this->taxonomy_list,
-				'status' => $this->status
+				'status' => $this->status,
+				'max_num_pages' => $this->max_num_pages,
+				'current_page' => $this->current_page
 			);
 
 			if( $this->options['json_format'] == true )
@@ -51,7 +56,6 @@ if( class_exists('customSearch') ){
 			return $this->output;
 
 		}
-
 
 		protected function __get_status(){
 
@@ -65,16 +69,13 @@ if( class_exists('customSearch') ){
 
 		}
 
-
 		protected function __format_search(){
-
 
 			$this->s_query = explode("-", $this->options['s_query']);
 			$this->s_query = implode(" ", $this->s_query);
-			$this->s_query = '%' . like_escape( $this->s_query ) . '%'; // Thanks Manny Fleurmond
+			$this->s_query = '%' . like_escape( esc_sql($this->s_query) ) . '%'; // Thanks Manny Fleurmond
 
 		}
-
 
 		protected function __get_id_all(){
 			
@@ -123,59 +124,16 @@ if( class_exists('customSearch') ){
 
 		}
 
-		private function __get_post_args(){
-			
-			$args = array(
-				'post__in' => $this->id_list['posts'],
-				'status' => 'published'
-			);
-
-			if( $this->options['post_type'] ){
-				$args_post_type = array( 'post_type' => $this->options['post_type'] );
-
-			} else {
-				$args_post_type = array( 'post_type' => 'any' );
-			}
-
-			$args = array_merge($args_post_type,$args);
-
-			return $args;
-
+		protected function __get_posts_per_page(){
+			return ( $this->options['posts_per_page'] ? $this->options['posts_per_page'] : 1 );
 		}
 
-		protected function __get_post_list(){
+		protected function __get_current_page(){
+			return (int)( $this->options['paged'] ? $this->options['paged'] : ( get_query_var( 'paged' ) ? get_query_var( 'paged' ) : 1 ) );
+		}
 
-			// if no post were found just return false
-			if( empty($this->id_list['posts']) ){ return false; }
-
-			$this->post_list = array();
-			$args = $this->__get_post_args();
-
-			$post_list_query = new WP_Query( $args );
-
-			if ( $post_list_query->have_posts() ) :
-				while ( $post_list_query->have_posts() ) : 
-					$post_list_query->the_post();
-
-					global $post;
-
-					$post_data = new customPost($post, 
-						$this->options['date_format'], 
-						$this->options['post_taxonomy'],
-						$this->options['post_thumbnail_size']
-					);
-
-
-					$post_data_vars = $post_data->get_vars();
-
-					array_push($this->post_list, $post_data_vars );
-
-				endwhile;
-			endif;
-			
-
-			wp_reset_postdata();
-
+		protected function __get_post_type(){
+			return ( $this->options['post_type'] ? $this->options['post_type'] : 'any' );
 		}
 
 		protected function __get_taxonomy_list(){
@@ -199,11 +157,65 @@ if( class_exists('customSearch') ){
 						'permalink' => $term_permalink,
 						'name' => $term->name
 					);
-					array_push($this->taxonomy_list, $temp_term_data );
+					array_push( $this->taxonomy_list, $temp_term_data );
 					
 				endif;
 				
 			endforeach;
+
+		}
+
+		private function __get_post_args(){
+			$args = array(
+				'post__in' => $this->id_list['posts'],
+				'status' => 'published',
+				'post_type' => $this->__get_post_type(),
+				'paged' => $this->__get_current_page(),
+				'posts_per_page' => $this->__get_posts_per_page()
+			);
+
+			return $args;
+
+		}
+
+		private function __get_post_list(){
+
+			// if no post were found just return false
+			if( empty($this->id_list['posts']) ){ return false; }
+
+			$this->post_list = array();
+
+			$args = $this->__get_post_args();
+
+			$post_list_query = new WP_Query( $args );
+
+			if ( $post_list_query->have_posts() ) :
+			
+				$this->max_num_pages = $post_list_query->max_num_pages;
+				$this->current_page = $this->__get_current_page();
+
+				while ( $post_list_query->have_posts() ) : 
+					$post_list_query->the_post();
+
+					global $post;
+
+					$post_data = new customPost($post, 
+						$this->options['date_format'], 
+						$this->options['post_taxonomy'],
+						$this->options['post_thumbnail_size']
+					);
+
+					$post_data_vars = $post_data->get_vars();
+
+					array_push( $this->post_list, $post_data_vars );
+
+				endwhile;
+
+			endif;
+
+			
+
+			wp_reset_postdata();
 
 		}
 

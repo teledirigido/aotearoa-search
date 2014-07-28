@@ -25,30 +25,45 @@ function aotearoa_aj_search(){
 
 	// requested date
 	$options = array(
+		
+		'todo'	=> esc_html( $_REQUEST['todo'] ),
+		'json_format' => ( $_REQUEST['json_format'] == "true" ? true : false  ),
+		
 		's_query' 	=> esc_html( $_REQUEST['s_query'] ),
 		's_taxonomy' => (int)esc_html( $_REQUEST['s_taxonomy'] ),
-		'json_format' => ( $_REQUEST['json_format'] == "true" ? true : false  ),
+		
+		'post_event' => esc_html( $_REQUEST['post_event'] ),
 		'post_type' => esc_html( $_REQUEST['post_type'] ),
 		'post_taxonomy' => esc_html( $_REQUEST['post_taxonomy'] ),
 		'post_thumbnail' => esc_html( $_REQUEST['post_thumbnail'] ),
 		'date_format' => esc_html( $_REQUEST['date_format'] ),
+		
+		'paged' => esc_html( $_REQUEST['paged'] ),
+		'posts_per_page' => (int)esc_html( $_REQUEST['posts_per_page'] )
 
 	);
 
-	switch( $options['post_type'] ):
+	switch( $options['todo'] ):
 		
-		case 'event':
-			$list = new customSearchEvent( $options );
+		case 'search-event': 
+			$list = new customSearchEvent( $options ); 
+			$output = $list->get_vars();
 			break;
 
-		default:
+		case 'datepicker-event':
+			$list = new customSearchDatepicker( $options );
+			$output = $list->get_vars();
+			break;
+		
+		case 'search':
 			$list = new customSearch( $options );
+			$output = $list->get_vars();
+			break;
+			
+		default:
+			$output = 'Nobody told me what todo';
 
 	endswitch;
-
-	
-	
-	$output = $list->get_vars();
 
 	// Delivering
 	print_r($output);

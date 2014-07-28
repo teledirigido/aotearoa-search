@@ -25,12 +25,17 @@ if( class_exists('customPost') ){
 			$this->post_taxonomy = $post_taxonomy;
 
 			$this->post = $post;
-			$this->post_content = apply_filters( 'the_content', $this->post->post_content );
+
 			$this->permalink = get_permalink($post->ID );
 			$this->custom_date = date( $date_format, strtotime($this->post->post_date) );
-			$this->excerpt = apply_filters('the_content', get_the_excerpt() );
 			$this->thumbnail = get_the_post_thumbnail($post->ID, $post_thumbnail_size );
 			$this->taxonomy = $this->get_parsed_taxonomy( $this->ID , $this->post_taxonomy );
+			
+			$this->post_content = array(
+				'the_content' => apply_filters( 'the_content', $this->post->post_content ),
+				'the_content_raw' => $this->post->post_content,
+				'the_excerpt' => apply_filters('the_content', get_the_excerpt() )
+			);
 
 		}
 

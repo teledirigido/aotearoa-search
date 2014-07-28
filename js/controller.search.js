@@ -14,74 +14,88 @@ var searchPostByQuery = function(options){
 }
 
 
-searchPostByQuery.prototype.__get_posts = function(options,callback){
+searchPostByQuery.prototype.__get_posts = function(options, callback ){
 
 	if( options.s_query == '' ){
-		if( this.options._debug == true ){ console.log('Empty query');  }	
+		_this.options._debug && console.log('Empty query');
 		return false;
 		
 	}
 
 	// here is where we performance the request
-	data = jQuery.ajax({
+	ajax_call = jQuery.ajax({
 
 		url: ajaxurl,
 		  
+		// fn: 		PHP function we will use, located on search.php
+		// action: 	Wordpress action
 		data: {
 			'action': 			'aotearoa_do_search_ajax',
 			'fn': 				'aotearoa_aj_search',
+			'todo':				options.todo,
+
 			'json_format': 		options.json_format,
 			's_query': 			options.s_query,
+			'paged': 			( options.paged ? options.paged : 1 ),
 			'post_type': 		options.post_type,
 			'post_taxonomy': 	options.post_taxonomy,
 			'post_thumbnail': 	options.post_thumbnail,
 			'date_format': 		options.date_format,
+			'posts_per_page': 	options.posts_per_page,
 		},
 		  
 		dataType: ( options.json_format == true ? 'JSON' : '' ),
 
 	 });
 
-	callback(options,data,this);
+	if( callback && typeof(callback) === "function" ) callback();
  
 }
 
 searchPostByQuery.prototype.the_search_posts = function(){
 
-	if( this.options._debug == true ){ 
-		console.log("Searching: " + this.options.s_query );  
-	}
-	
+
+	var options = this.options,
+		_this 	= this;
+
+		_this.options._debug 
+			&& console.log("Searching: " + this.options.s_query );  
+
 	// if query was not empty		
-	this.__get_posts( this.options, function(options,data,_this){
+	this.__get_posts( this.options, function(){
 
-		data.done(function(data){
+		ajax_call.success( function(data){
 
-			if( options._debug == true ){
-				console.log('Data succefully retrieved');
-				console.log(data);
-			}
+			_this.options._debug && console.log('Data succefully retrieved');
+			_this.options._debug && console.log(data);
 
+			// Defining current_page and max_num_pages 
+			// after retrieve content
+			_this.options.post_type = data.post_type;
+			_this.current_page = data.current_page;
+			_this.max_num_pages = data.max_num_pages;
+
+			// Build HTML
 			_this.build_html(data);
 
-		});
+			ajax_call.abort();
 
-		data.error(function(jqXHR, textStatus, errorThrown) {
-	        
+		}).error( function(jqXHR, textStatus, errorThrown) {
+		        
 	        // If something crazy, options has no this as it's from the callback.
 	        if( options._debug == true ){
-
 	            console.log(jqXHR[0]);
 	            console.log('error: '+textStatus);
 	            console.log('error msg: '+errorThrown );
 	        	
 	        }
 
-	    });
+	        return textStatus;
 
+		});
 
 	});
 
+	return false;
+
 };
-
-

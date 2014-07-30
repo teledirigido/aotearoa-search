@@ -23,19 +23,24 @@
  *
  */
 
-wp_enqueue_script( 'search-controller', 
-	plugin_dir_url( __FILE__ ) . 'js/controller.search.js', 
-	array('jquery') , 
-	'1.0', 
-	true 
-);
+add_action('wp_enqueue_scripts', 'aotearoa_search_scripts'); // initiate the function  
 
-wp_enqueue_script( 'search-view', 
-	plugin_dir_url( __FILE__ ) . 'js/view.search.js', 
-	array('jquery') , 
-	'1.0', 
-	true 
-);
+function aotearoa_search_scripts(){
+	wp_register_script( 'search-controller', 
+		plugin_dir_url( __FILE__ ) . 'js/controller.search.js', 
+		array('jquery') , 
+		'1.0', 
+		true 
+	);
+
+	wp_register_script( 'search-view', 
+		plugin_dir_url( __FILE__ ) . 'js/view.search.js', 
+		array('jquery') , 
+		'1.0', 
+		true 
+	);
+}
+
 
 require_once('class/customsearch.php');
 require_once('class/custompost.php');

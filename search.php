@@ -36,7 +36,8 @@ function aotearoa_aj_search(){
 		'post_type' => esc_html( $_REQUEST['post_type'] ),
 		'post_taxonomy' => esc_html( $_REQUEST['post_taxonomy'] ),
 		'post_thumbnail' => esc_html( $_REQUEST['post_thumbnail'] ),
-		'date_format' => esc_html( $_REQUEST['date_format'] ),
+		'date_format' => $_REQUEST['date_format'],
+		'time_format' => $_REQUEST['time_format'],
 		
 		'paged' => esc_html( $_REQUEST['paged'] ),
 		'posts_per_page' => (int)esc_html( $_REQUEST['posts_per_page'] )
@@ -55,13 +56,10 @@ function aotearoa_aj_search(){
 			$output = $list->get_vars();
 			break;
 		
-		case 'search':
+		default:
 			$list = new customSearch( $options );
 			$output = $list->get_vars();
-			break;
 			
-		default:
-			$output = 'Nobody told me what todo';
 
 	endswitch;
 
@@ -75,5 +73,8 @@ function aotearoa_aj_search(){
 add_action('wp_footer','show_ajaxurl');
 
 function show_ajaxurl() { ?>
-<script type="text/javascript">var ajaxurl = '<?php echo admin_url('admin-ajax.php'); ?>';</script>
+<script type="text/javascript">
+	var ajaxurl = '<?php echo admin_url('admin-ajax.php'); ?>';
+	var ajaxsearch = { date_format:'<?php echo get_option("date_format"); ?>', time_format:'<?php echo get_option("time_format"); ?>' };
+</script>
 <?php }

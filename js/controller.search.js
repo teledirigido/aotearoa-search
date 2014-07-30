@@ -40,8 +40,11 @@ searchPostByQuery.prototype.__get_posts = function(options, callback ){
 			'post_type': 		options.post_type,
 			'post_taxonomy': 	options.post_taxonomy,
 			'post_thumbnail': 	options.post_thumbnail,
-			'date_format': 		options.date_format,
 			'posts_per_page': 	options.posts_per_page,
+			
+			'date_format': 		( options.date_format ? options.date_format : ajaxsearch.date_format ),
+			'time_format': 		( options.time_format ? options.time_format : ajaxsearch.time_format )
+
 		},
 		  
 		dataType: ( options.json_format == true ? 'JSON' : '' ),

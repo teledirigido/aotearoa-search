@@ -2,15 +2,28 @@ var searchPostByQuery = function(options){
 
 	this.options = options;
 
-	if( typeof this.options._debug == 'undefined' )
+
+	if( typeof this.options._debug === 'undefined' )
 		this.options._debug = false;
 
-	if( typeof this.options._reload_same == 'undefined' )
+	if( typeof this.options._reload_same === 'undefined' )
 		this.options._reload_same = false;
 
-	if( typeof this.options.json_format == 'undefined' )
+	if( typeof this.options.json_format === 'undefined' )
 		this.options.json_format = true;
 
+	if( typeof this.options.paged === 'undefined' )
+		this.options.paged = 1;
+
+	if( typeof this.options.date_format === 'undefined' )
+		this.options.date_format = ajaxsearch.date_format;
+
+	if( typeof this.options.time_format === 'undefined' )
+		this.options.time_format = ajaxsearch.time_format;
+
+	if( typeof this.options.post_type === 'undefined' )
+		this.options.post_type = 'any';
+	
 }
 
 
@@ -33,18 +46,15 @@ searchPostByQuery.prototype.__get_posts = function(options, callback ){
 			'action': 			'aotearoa_do_search_ajax',
 			'fn': 				'aotearoa_aj_search',
 			'todo':				options.todo,
-
 			'json_format': 		options.json_format,
 			's_query': 			options.s_query,
-			'paged': 			( options.paged ? options.paged : 1 ),
+			'paged': 			options.paged,
 			'post_type': 		options.post_type,
 			'post_taxonomy': 	options.post_taxonomy,
 			'post_thumbnail': 	options.post_thumbnail,
 			'posts_per_page': 	options.posts_per_page,
-			
-			'date_format': 		( options.date_format ? options.date_format : ajaxsearch.date_format ),
-			'time_format': 		( options.time_format ? options.time_format : ajaxsearch.time_format )
-
+			'date_format': 		options.date_format,
+			'time_format': 		options.time_format
 		},
 		  
 		dataType: ( options.json_format == true ? 'JSON' : '' ),
@@ -69,6 +79,7 @@ searchPostByQuery.prototype.the_search_posts = function(){
 
 		ajax_call.success( function(data){
 
+			
 			_this.options._debug && console.log('Data succefully retrieved');
 			_this.options._debug && console.log(data);
 
@@ -87,8 +98,8 @@ searchPostByQuery.prototype.the_search_posts = function(){
 		        
 	        // If something crazy, options has no this as it's from the callback.
 	        if( options._debug == true ){
-	            console.log(jqXHR[0]);
-	            console.log('error: '+textStatus);
+	            console.log(jqXHR);
+	            console.log('STATUS: '+textStatus);
 	            console.log('error msg: '+errorThrown );
 	        	
 	        }

@@ -199,23 +199,43 @@ if( class_exists('customSearch') ){
 
 					global $post;
 
-					$post_data = new customPost($post, 
-						$this->options['date_format'], 
-						$this->options['post_taxonomy'],
-						$this->options['post_thumbnail_size']
-					);
-
-					$post_data_vars = $post_data->get_vars();
-
+					$post_data_vars = $this->__retrieve_post($post);
 					array_push( $this->post_list, $post_data_vars );
 
 				endwhile;
 
 			endif;
 
-			
-
 			wp_reset_postdata();
+
+		}
+
+		private function __retrieve_post($retrieved_post){
+
+			switch( $retrieved_post->post_type ):
+
+				case 'people':
+				$post_data = new customPostPeople($retrieved_post,
+					$this->options['date_format'], 
+					$this->options['post_taxonomy'],
+					$this->options['post_thumbnail_size']
+				);
+				break;
+
+				case 'post':
+				default:
+				$post_data = new customPost($retrieved_post,
+					$this->options['date_format'], 
+					$this->options['post_taxonomy'],
+					$this->options['post_thumbnail_size']
+				);
+				break;
+
+			endswitch;
+
+			$post_data_vars = $post_data->get_vars();
+
+			return $post_data_vars;
 
 		}
 

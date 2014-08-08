@@ -44,4 +44,5 @@ function aotearoa_search_scripts(){
 
 require_once('class/customsearch.php');
 require_once('class/custompost.php');
+require_once('class/custompost.people.php');
 require_once('search.php');

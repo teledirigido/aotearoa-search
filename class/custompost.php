@@ -9,7 +9,6 @@ if( class_exists('customPost') ){
 
 		private $ID;
 		private $post_taxonomy;
-
 		private $post;
 		private $post_content;
 		private $permalink;
@@ -42,7 +41,7 @@ if( class_exists('customPost') ){
 		public function get_vars(){
 
 			$this->post->permalink = $this->permalink;
-			$this->post->custom_date	= $this->custom_date;
+			$this->post->custom_date = $this->custom_date;
 			$this->post->taxonomy = $this->taxonomy;
 			$this->post->excerpt = $this->excerpt;
 			$this->post->thumbnail = $this->thumbnail;
@@ -51,14 +50,14 @@ if( class_exists('customPost') ){
 			return $this->post;
 		}
 
-		public function get_post_vars(){
+		// public function get_post_vars(){
 			
-			$content = array(
-				'post'	=>	$this->get_vars()
-			);
+		// 	$content = array(
+		// 		'post'	=>	$this->get_vars()
+		// 	);
 
-			return $content;
-		}
+		// 	return $content;
+		// }
 
 		public function get_parsed_taxonomy($id,$taxonomy){
 			/**
@@ -88,6 +87,29 @@ if( class_exists('customPost') ){
 
 			return $term_string;
 
+		}
+
+		public static function _parse_value($value){
+		    if( !isset($value) ){
+		        return false;
+		    } else if( is_array($value) ){
+		        return implode($value);
+		    } else if( is_string($value) ){
+		        return $value;
+		    }
+
+		}
+
+		public static function _parse_date($date_format,$value){
+			return date( $date_format, strtotime($value) );
+		}
+
+		public static function _is_ef($id){
+		   $categories = wp_get_post_categories( $id );
+		    foreach( $categories as $cat ){
+		        if( $cat == 5){ return true; }
+		    }
+		    return false;
 		}
 
 	}

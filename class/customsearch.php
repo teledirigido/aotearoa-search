@@ -148,6 +148,8 @@ if( class_exists('customSearch') ){
 
 				$term = get_term( $term_id, $this->options['post_taxonomy'] );
 				
+				if($term->errors) return;
+
 				if( $term->count == 0 ):
 					continue; // do nothing, term empty
 

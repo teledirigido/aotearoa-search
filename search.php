@@ -10,13 +10,10 @@
   * @see      http://codex.wordpress.org/AJAX_in_Plugins
   */
 
-add_action('wp_ajax_nopriv_aotearoa_do_search_ajax', 'aotearoa_aj_search');
-add_action('wp_ajax_aotearoa_do_search_ajax', 'aotearoa_aj_search');
-
 class aj_search {
 
-	private $output;
-	private $options;
+	protected $output;
+	protected $options;
 
 	private function _get_todo(){
 		if( isset($_REQUEST['todo']) )
@@ -92,7 +89,28 @@ class aj_search {
 		return $this->output;
 	}
 
+	private function do_search(){
+		
+		switch( $this->options['todo'] ):
+			case 'search-event': 
+				$list = new customSearchEvent( $this->options ); 
+				$this->output = $list->get_vars();
+				break;
+
+			case 'datepicker-event':
+				$list = new customSearchDatepicker( $this->options );
+				$this->output = $list->get_vars();
+				break;
+			
+			default:
+				$list = new customSearch( $this->options );
+				$this->output = $list->get_vars();
+		endswitch;
+	}
+
 	function __construct(){
+
+		$this->output = array();
 
 		$this->options = array(
 			'todo' 					=> $this->_get_todo(),
@@ -111,26 +129,14 @@ class aj_search {
 			'posts_per_page' 		=> $this->_get_posts_per_page()
 		);
 
-		switch( $this->options['todo'] ):
-		
-			case 'search-event': 
-				$list = new customSearchEvent( $this->options ); 
-				$this->output = $list->get_vars();
-				break;
-
-			case 'datepicker-event':
-				$list = new customSearchDatepicker( $this->options );
-				$this->output = $list->get_vars();
-				break;
-			
-			default:
-				$list = new customSearch( $this->options );
-				$this->output = $list->get_vars();
-		endswitch;
+		$this->do_search();
 
 	}
 
 }
+
+add_action('wp_ajax_nopriv_aotearoa_do_search_ajax', 'aotearoa_aj_search');
+add_action('wp_ajax_aotearoa_do_search_ajax', 'aotearoa_aj_search');
 
 
 function aotearoa_aj_search(){

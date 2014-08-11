@@ -24,6 +24,12 @@ var searchPostByQuery = function(options){
 	if( typeof this.options.post_type === 'undefined' )
 		this.options.post_type = 'any';
 	
+	if( typeof this.options.fn === 'undefined' )
+		this.options.fn = 'aotearoa_aj_search';
+
+	if( typeof this.options.action === 'undefined' )
+		this.options.action = 'aotearoa_do_search_ajax';
+
 }
 
 
@@ -43,8 +49,8 @@ searchPostByQuery.prototype.__get_posts = function(options, callback ){
 		// fn: 		PHP function we will use, located on search.php
 		// action: 	Wordpress action
 		data: {
-			'action': 			'aotearoa_do_search_ajax',
-			'fn': 				'aotearoa_aj_search',
+			'action': 			options.action,
+			'fn': 				options.fn,
 			'todo':				options.todo,
 			'json_format': 		options.json_format,
 			's_query': 			options.s_query,

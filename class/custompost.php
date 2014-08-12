@@ -88,10 +88,12 @@ if( class_exists('customPost') ){
 		}
 
 		public static function _parse_value($value){
-		    if( !isset($value) ){
+		    if( !isset($value) || empty($value) ){
 		        return false;
+		    } else if( is_array($value[0]) ){
+		        return implode($value[0]);
 		    } else if( is_array($value) ){
-		        return implode($value);
+		    	return implode($value);
 		    } else if( is_string($value) ){
 		        return $value;
 		    }

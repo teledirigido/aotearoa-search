@@ -29,7 +29,7 @@ class customPostPeople extends customPost {
 
 		$content = array_merge( (array)parent::get_vars() );
 
-		$content['permalink'] = $this->get_email();
+		$content['permalink'] = 'mailto:'.$this->get_email();
 		$content['post_content']['the_content_raw'] = $this->get_post_content();
 
 		return $content;

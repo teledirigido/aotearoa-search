@@ -147,6 +147,8 @@ if( class_exists('customSearch') ){
 
 				$term = get_term( $term_id, $this->options['post_taxonomy'] );
 				
+				if($term->errors) return;
+
 				if( $term->count == 0 ):
 					continue; // do nothing, term empty
 
@@ -164,7 +166,7 @@ if( class_exists('customSearch') ){
 
 		}
 
-		private function __get_post_args(){
+		protected function __get_post_args(){
 			$args = array(
 				'post__in' => $this->id_list['posts'],
 				'status' => 'published',
@@ -177,7 +179,7 @@ if( class_exists('customSearch') ){
 
 		}
 
-		private function __get_post_list(){
+		protected function __get_post_list(){
 
 			// if no post were found just return false
 			if( empty($this->id_list['posts']) ){ return false; }

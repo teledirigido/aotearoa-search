@@ -70,7 +70,6 @@ if( class_exists('customSearch') ){
 		}
 
 		protected function __format_search(){
-
 			$this->s_query = explode("-", $this->options['s_query']);
 			$this->s_query = implode(" ", $this->s_query);
 			$this->s_query = '%' . like_escape( esc_sql($this->s_query) ) . '%'; // Thanks Manny Fleurmond
@@ -215,7 +214,7 @@ if( class_exists('customSearch') ){
 			switch( $retrieved_post->post_type ):
 
 				case 'people':
-				$post_data = new customPostPeople($retrieved_post,
+				$post_data = new customPostPeople($retrieved_post->ID,
 					$this->options['date_format'], 
 					$this->options['post_taxonomy'],
 					$this->options['post_thumbnail_size']
@@ -224,7 +223,7 @@ if( class_exists('customSearch') ){
 
 				case 'post':
 				default:
-				$post_data = new customPost($retrieved_post,
+				$post_data = new customPost($retrieved_post->ID,
 					$this->options['date_format'], 
 					$this->options['post_taxonomy'],
 					$this->options['post_thumbnail_size']

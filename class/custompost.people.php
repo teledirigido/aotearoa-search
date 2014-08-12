@@ -9,10 +9,9 @@ class customPostPeople extends customPost {
 	
 	private $ID;
 
-	function __construct( $post, $date_format, $time_format ){
-		
-		parent::__construct( $post, $date_format, '' , '' );
-		$this->ID = $post->ID;
+	function __construct( $given_id, $date_format, $time_format ){
+		$this->ID = $given_id;
+		parent::__construct( $this->ID, $date_format, '' , '' );
 		
 	}
 

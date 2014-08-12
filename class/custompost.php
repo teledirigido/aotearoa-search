@@ -9,7 +9,7 @@ if( class_exists('customPost') ){
 
 		private $ID;
 		private $post_taxonomy;
-		private $post;
+		private $cpost;
 		private $post_content;
 		private $permalink;
 		private $custom_date;
@@ -17,22 +17,20 @@ if( class_exists('customPost') ){
 		private $excerpt;
 		private $thumbnail;
 
-		function __construct ( $post , $date_format, $post_taxonomy , $post_thumbnail_size ){
+		function __construct ( $given_id , $date_format, $post_taxonomy , $post_thumbnail_size ){
 
+			$this->ID = $given_id;
+			$this->cpost = get_post($given_id);
+			$this->cpost_taxonomy = $post_taxonomy;
+			$this->permalink = get_permalink($this->ID );
 
-			$this->ID = $post->ID;
-			$this->post_taxonomy = $post_taxonomy;
-
-			$this->post = $post;
-
-			$this->permalink = get_permalink($post->ID );
-			$this->custom_date = date( $date_format, strtotime($this->post->post_date) );
-			$this->thumbnail = get_the_post_thumbnail($post->ID, $post_thumbnail_size );
-			$this->taxonomy = $this->get_parsed_taxonomy( $this->ID , $this->post_taxonomy );
+			$this->custom_date = date( $date_format, strtotime($this->cpost->post_date) );
+			$this->thumbnail = get_the_post_thumbnail($this->ID, $post_thumbnail_size );
+			$this->taxonomy = $this->get_parsed_taxonomy( $this->ID , $this->cpost_taxonomy );
 			
-			$this->post_content = array(
-				'the_content' => apply_filters( 'the_content', $this->post->post_content ),
-				'the_content_raw' => $this->post->post_content,
+			$this->cpost_content = array(
+				'the_content' => apply_filters( 'the_content', $this->cpost->post_content ),
+				'the_content_raw' => $this->cpost->post_content,
 				'the_excerpt' => apply_filters('the_content', get_the_excerpt() )
 			);
 
@@ -40,14 +38,14 @@ if( class_exists('customPost') ){
 
 		public function get_vars(){
 
-			$this->post->permalink = $this->permalink;
-			$this->post->custom_date = $this->custom_date;
-			$this->post->taxonomy = $this->taxonomy;
-			$this->post->excerpt = $this->excerpt;
-			$this->post->thumbnail = $this->thumbnail;
-			$this->post->post_content = $this->post_content;
+			$this->cpost->permalink = $this->permalink;
+			$this->cpost->custom_date = $this->custom_date;
+			$this->cpost->taxonomy = $this->taxonomy;
+			$this->cpost->excerpt = $this->excerpt;
+			$this->cpost->thumbnail = $this->thumbnail;
+			$this->cpost->post_content = $this->cpost_content;
 
-			return $this->post;
+			return $this->cpost;
 		}
 
 		// public function get_post_vars(){

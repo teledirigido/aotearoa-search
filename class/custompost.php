@@ -19,6 +19,7 @@ if( class_exists('customPost') ){
 
 		function __construct ( $given_id , $date_format, $post_taxonomy , $post_thumbnail_size ){
 
+
 			$this->ID = $given_id;
 			$this->cpost = get_post($given_id);
 			$this->cpost_taxonomy = $post_taxonomy;
@@ -28,11 +29,14 @@ if( class_exists('customPost') ){
 			$this->thumbnail = get_the_post_thumbnail($this->ID, $post_thumbnail_size );
 			$this->taxonomy = $this->get_parsed_taxonomy( $this->ID , $this->cpost_taxonomy );
 			
+			
+			setup_postdata($this->cpost);
 			$this->cpost_content = array(
 				'the_content' => apply_filters( 'the_content', $this->cpost->post_content ),
 				'the_content_raw' => $this->cpost->post_content,
 				'the_excerpt' => apply_filters('the_content', get_the_excerpt() )
 			);
+			wp_reset_postdata();
 
 		}
 
@@ -105,7 +109,7 @@ if( class_exists('customPost') ){
 		}
 
 		public static function _is_ef($id){
-		   $categories = wp_get_post_categories( $id );
+		   	$categories = wp_get_post_categories( $id );
 		    foreach( $categories as $cat ){
 		        if( $cat == 5){ return true; }
 		    }

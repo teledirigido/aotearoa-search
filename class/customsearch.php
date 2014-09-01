@@ -50,10 +50,10 @@ if( class_exists('customSearch') ){
 				'current_page' => $this->current_page
 			);
 
-			// if( $this->options['json_format'] == true ){
+			if( $this->options['json_format'] == true ){
 				$this->output = json_encode($this->output);
 				
-			// }
+			}
 
 			return $this->output;
 

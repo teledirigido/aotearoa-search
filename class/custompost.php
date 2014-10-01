@@ -25,7 +25,7 @@ if( class_exists('customPost') ){
 			$this->cpost_taxonomy = $post_taxonomy;
 			$this->permalink = get_permalink($this->ID );
 
-			$this->custom_date = date( $date_format, strtotime($this->cpost->post_date) );
+			$this->custom_date = date( $date_format, strtotime($this->cpost->time_start_date) );
 			$this->thumbnail = get_the_post_thumbnail($this->ID, $post_thumbnail_size );
 			$this->taxonomy = $this->get_parsed_taxonomy( $this->ID , $this->cpost_taxonomy );
 			

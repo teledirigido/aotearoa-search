@@ -72,9 +72,11 @@ if( class_exists('customSearch') ){
 		}
 
 		protected function __format_search(){
+			global $wpdb;
+			
 			$this->s_query = explode("-", $this->options['s_query']);
 			$this->s_query = implode(" ", $this->s_query);
-			$this->s_query = '%' . like_escape( esc_sql($this->s_query) ) . '%'; // Thanks Manny Fleurmond
+			$this->s_query = '%' . $wpdb->esc_like( esc_sql($this->s_query) ) . '%'; // Thanks Manny Fleurmond
 
 		}
 

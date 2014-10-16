@@ -77,15 +77,13 @@ searchPostByQuery.prototype.the_search_posts = function(){
 	var options = this.options,
 		_this 	= this;
 
-		_this.options._debug 
-			&& console.log("Searching: " + this.options.s_query );  
+		_this.options._debug && console.log("Searching: " + this.options.s_query );  
 
 	// if query was not empty		
 	this.__get_posts( this.options, function(){
 
 		ajax_call.success( function(data){
 
-			
 			_this.options._debug && console.log('Data succefully retrieved');
 			_this.options._debug && console.log(data);
 

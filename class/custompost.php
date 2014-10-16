@@ -16,16 +16,18 @@ if( class_exists('customPost') ){
 		private $taxonomy;
 		private $excerpt;
 		private $thumbnail;
+		private $date_format;
 
 		function __construct ( $given_id , $date_format, $post_taxonomy , $post_thumbnail_size ){
 
-
+			$this->date_format = $date_format;
 			$this->ID = $given_id;
 			$this->cpost = get_post($given_id);
 			$this->cpost_taxonomy = $post_taxonomy;
 			$this->permalink = get_permalink($this->ID );
 
-			$this->custom_date = date( $date_format, strtotime($this->cpost->time_start_date) );
+			$this->custom_date = $this->get_custom_date();
+
 			$this->thumbnail = get_the_post_thumbnail($this->ID, $post_thumbnail_size );
 			$this->taxonomy = $this->get_parsed_taxonomy( $this->ID , $this->cpost_taxonomy );
 			
@@ -60,6 +62,18 @@ if( class_exists('customPost') ){
 
 		// 	return $content;
 		// }
+
+		private function get_custom_date(){
+
+			// If event from eventfinda, we will display the date start
+			if( $this->_is_ef($this->ID) ):
+				return date( $this->date_format, strtotime( $this->_parse_value(get_post_meta($this->ID, 'ef_date_start')) ) );
+
+			// If it's any other type of event.
+			else:
+				return date( $this->date_format, strtotime($this->cpost->time_start_date) );
+			endif;
+		}
 
 		public function get_parsed_taxonomy($id,$taxonomy){
 			/**

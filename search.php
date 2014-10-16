@@ -97,6 +97,7 @@ class aj_search {
 				$this->output = $list->get_vars();
 				break;
 
+			case 'datepicker-event-full-month':
 			case 'datepicker-event':
 				$list = new customSearchDatepicker( $this->options );
 				$this->output = $list->get_vars();

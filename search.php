@@ -67,7 +67,7 @@ class aj_search {
 
 	private function _get_time_format(){
 		if( isset($_REQUEST['time_format']) )
-			return esc_html($_REQUEST['date_format']);
+			return esc_html($_REQUEST['time_format']);
 	}
 
 	private function _get_paged(){
@@ -90,7 +90,7 @@ class aj_search {
 	}
 
 	private function do_search(){
-		
+
 		switch( $this->options['todo'] ):
 			case 'search-event': 
 				$list = new customSearchEvent( $this->options ); 

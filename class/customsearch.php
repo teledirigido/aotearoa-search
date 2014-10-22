@@ -239,6 +239,7 @@ if( class_exists('customSearch') ){
 			endswitch;
 
 			$post_data_vars = $post_data->get_vars();
+			$post_data_vars->custom_date = customPost::_parse_date('d.m', $post_data_vars->custom_date );
 
 			return $post_data_vars;
 

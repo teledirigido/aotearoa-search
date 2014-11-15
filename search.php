@@ -15,17 +15,17 @@ class aj_search {
 	protected $output;
 	protected $options;
 
-	private function _get_todo(){
+	protected function _get_todo(){
 		if( isset($_REQUEST['todo']) )
 			return esc_html($_REQUEST['todo']);
 	}
 
-	private function _get_s_query(){
+	protected function _get_s_query(){
 		if( isset($_REQUEST['s_query']) )
 			return esc_html($_REQUEST['s_query']);
 	}
 
-	private function _get_json_format(){
+	protected function _get_json_format(){
 		if( isset($_REQUEST['json_format']) && $_REQUEST['json_format'] == "true" ){
 			return true;
 		}
@@ -34,53 +34,53 @@ class aj_search {
 		}
 	}
 
-	private function _get_s_taxonomy(){
+	protected function _get_s_taxonomy(){
 		if( isset($_REQUEST['s_taxonomy']) )
 			return esc_html($_REQUEST['s_taxonomy']);
 	}
 
-	private function _get_post_event(){
+	protected function _get_post_event(){
 		if( isset($_REQUEST['post_event']) )
 			return esc_html($_REQUEST['post_event']);
 	}
 
-	private function _get_post_type(){
+	protected function _get_post_type(){
 		if( isset($_REQUEST['post_type']) && post_type_exists($_REQUEST['post_type']) ){
 			return esc_html($_REQUEST['post_type']); }
 		else return 'any';
 	}
 
-	private function _get_post_taxonomy(){
+	protected function _get_post_taxonomy(){
 		if( isset($_REQUEST['post_taxonomy']) )
 			return esc_html( $_REQUEST['post_taxonomy'] );
 	}
 
-	private function _get_post_thumbnail(){
+	protected function _get_post_thumbnail(){
 		if( isset($_REQUEST['post_thumbnail']) )
 			return esc_html( $_REQUEST['post_thumnail'] );
 	}
 
-	private function _get_date_format(){
+	protected function _get_date_format(){
 		if( isset($_REQUEST['date_format']) )
 			return esc_html($_REQUEST['date_format']);
 	}
 
-	private function _get_time_format(){
+	protected function _get_time_format(){
 		if( isset($_REQUEST['time_format']) )
 			return esc_html($_REQUEST['time_format']);
 	}
 
-	private function _get_paged(){
+	protected function _get_paged(){
 		if( isset($_REQUEST['paged']) )
 			return esc_html($_REQUEST['paged']);
 	}
 
-	private function _get_posts_per_page(){
+	protected function _get_posts_per_page(){
 		if( isset($_REQUEST['posts_per_page']) )
 			return (int)esc_html($_REQUEST['posts_per_page']);
 	}
 
-	private function _get_post_thumbnail_size(){
+	protected function _get_post_thumbnail_size(){
 		if( isset($_REQUEST['post_thumbnail_size']) )
 			return esc_html((int)$_REQUEST['post_thumbnail_size']);	
 	}
